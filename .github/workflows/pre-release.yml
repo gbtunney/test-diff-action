@@ -1,0 +1,38 @@
+name: ⏳ Pre-Release PR Finalization
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - .changeset/**
+
+jobs:
+  finalize-pre-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+
+      - name: Setup Node + Install
+        run: |
+          npm install -g pnpm
+          pnpm install
+
+      - name: Run fix and docs:build for all packages
+        run: |
+          for pkg in $(pnpm -r exec -- json name | jq -r '.[]'); do
+            pnpm --filter $pkg fix || true
+            git diff --quiet || (git add . && git commit -m "style($pkg): auto formatting for release")
+            pnpm --filter $pkg docs:build || true
+            git diff --quiet || (git add . && git commit -m "docs($pkg): updated for release")
+          done
+
+      - name: Run repo diff logger
+        uses: ./.github/actions/repo-diff-logger
+        id: diff
+        with:
+          LOGGING_REPO: true
+          LOGGING_ALL: true
+          LOGGING_REPO_IGNORED: false

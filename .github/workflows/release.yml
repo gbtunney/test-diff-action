@@ -1,0 +1,47 @@
+name: 🚀 Final Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+
+      - name: Setup Node + Install
+        run: |
+          npm install -g pnpm
+          pnpm install
+
+      - name: Verify Clean State
+        uses: ./.github/actions/repo-diff-logger
+        id: diff
+        with:
+          LOGGING_REPO: true
+
+      - name: Block if dirty
+        if: ${{ steps.diff.outputs.REPO_CLEAN != 'true' }}
+        run: |
+          echo "❌ Refusing to release from a dirty repo."
+          exit 1
+
+      - name: Create Tags
+        run: |
+          pnpm changeset tag
+          git push origin --tags
+
+      - name: Create Release Branch
+        run: |
+          DATE=$(date +%Y%m%d%H%M%S)
+          BRANCH_NAME="release/$DATE"
+          git checkout -b $BRANCH_NAME
+          git push origin $BRANCH_NAME
