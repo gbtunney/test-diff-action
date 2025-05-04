@@ -26,10 +26,11 @@ jobs:
 
             - name: Build, Lint and Unit Tests 🚨
               run: |
-                  pnpm run build && pnpm fix && pnpm test
+                  pnpm run build && pnpm fix
+                  ls .
 
-            - name: Run repo diff logger
-              uses: actions/repo-diff-logger
+            - name: Run repo git logger
+              uses: ./packages/repo-git-logger
               id: diff
               with:
                   LOGGING_REPO: true

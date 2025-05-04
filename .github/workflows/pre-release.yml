@@ -30,7 +30,7 @@ jobs:
                   done
 
             - name: Run repo diff logger
-              uses: ./.github/actions/repo-diff-logger
+              uses: ./packages/repo-git-logger
               id: diff
               with:
                   LOGGING_REPO: true

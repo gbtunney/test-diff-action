@@ -1,107 +1,86 @@
-# 🧼 repo-diff-logger
+# gbt-boilerplate 🐌
 
-Custom GitHub Action in TypeScript + ESM that logs changed files in a monorepo, checks `.gitignore`, flags modified/new
-files, and outputs useful diagnostics for release automation.
+[![NPM](https://img.shields.io/npm/v/gbt-boilerplate)](http://www.npmjs.com/package/gbt-boilerplate)
+![License: MIT](https://img.shields.io/npm/l/gbt-boilerplate)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+
+## This is a stupid repo to test a github action.
+
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+![ESLint](https://img.shields.io/badge/ESLint-4B3263?style=for-the-badge&logo=eslint&logoColor=white)
+![RollupJS](https://img.shields.io/badge/RollupJS-ef3335?style=for-the-badge&logo=rollup.js&logoColor=white)
+![NPM](https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white)
+![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)
+![Vitest](https://img.shields.io/badge/vitest-6E9F18?style=for-the-badge&logo=vitest&logoColor=white)
+![Zod](https://img.shields.io/badge/zod-%233068b7.svg?style=for-the-badge&logo=zod&logoColor=white)
+
+### Repository
+
+- **Github:** [`gbt-boilerplate`](https://github.com/gbtunney/gbt-boilerplate) •
+  [`snailicide-monorepo`](https://github.com/gbtunney/snailicide-monorepo.git)
+- **CDN**: [jsdeliver](https://cdn.jsdelivr.net/npm/gbt-boilerplate/dist/index.min.js)
+
+### Author
+
+👤 **Gillian Tunney**
+
+- [github](https://github.com/gbtunney)
+- [email](mailto:gbtunney@mac.com)
+
+> Recommended package manager is [pnpm](http://pnpm.io)
+>
+> [![PNPM](https://img.shields.io/badge/pnpm-%234a4a4a.svg?style=for-the-badge&logo=pnpm&logoColor=f69220)](http://pnpm.io)
+
+## gbt-boilerplate 🐌
 
 ---
 
-## ✨ Features
+This package provides {blah,blah, blah,blah,blah} ... Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+mollit anim id est laborum.
 
-- ✅ Outputs list of changed, new, and ignored files
-- 📂 Filters via `.gitignore` and custom paths
-- 🕒 Tracks time since file modification
-- 🧼 Detects clean vs dirty repository state
-- ✨ Written in **ESM TypeScript** with full Vitest test suite
-- 🧪 Code coverage reporting enabled
+## Installation
 
----
+```shell
+# pnpm
+$ pnpm add @snailicide/build-config -D
 
-## 📁 Project Structure
+# yarn
+$ yarn add @snailicide/build-config -D
 
+# npm
+$ npm install @snailicide/build-config --development
 ```
-repo-diff-logger/
-├── src/
-│   ├── index.ts
-│   └── utils.ts
-├── tests/
-│   ├── index.test.ts
-│   └── utils.test.ts
-├── .github/workflows/test.yml
-├── dist/              # output dir
-├── action.yml         # GitHub Action metadata
-├── tsconfig.json
-├── vitest.config.ts
-├── .gitignore
-├── package.json
-└── README.md
-```
 
----
+_**OR:**_
 
-## 🚀 Setup & Usage
-
-### Install
-
-```bash
+```shell
+# install in workspace
+git clone https://github.com/gbtunney/gbt-boilerplate.git ./packages/gbt-boilerplate
+rm -rf ./packages/gbt-boilerplate/.git
 pnpm install
-pnpm run build
+
+# run delete files script
+pnpm --filter=gbt-boilerplate build:ts
+pnpm --filter=gbt-boilerplate exec node ./workspace.mjs
 ```
 
-### Test
+## Examples
 
-```bash
-pnpm test
-pnpm test -- --coverage
+```ts
+/* * HELLO WORLD * */
+
+export type HelloWorld = string | number
+
+const sampleFunc = (value: HelloWorld): HelloWorld => {
+    console.log('sampleFunc:: ', value)
+    return value
+}
 ```
 
-### Use in Workflow
+## Helpful Links
 
-```yaml
-- uses: your-org/repo-diff-logger@v1
-  with:
-      LOGGING_REPO: true
-      LOGGING_ALL: true
-      LOGGING_REPO_IGNORED: true
-      CHANGED_INCLUDES: 'dist,docs,storybook-static,types'
-```
-
-### Inputs
-
-| Name                   | Type     | Default                              | Description                               |
-| ---------------------- | -------- | ------------------------------------ | ----------------------------------------- |
-| `LOGGING_REPO`         | `bool`   | `"true"`                             | Log non-ignored changed files             |
-| `LOGGING_ALL`          | `bool`   | `"false"`                            | Log all changed files (ignored + tracked) |
-| `LOGGING_REPO_IGNORED` | `bool`   | `"false"`                            | Log `.gitignore`-ignored changed files    |
-| `CHANGED_INCLUDES`     | `string` | `"dist,docs,storybook-static,types"` | Optional overrides for filtering focus    |
-
----
-
-## 🧪 Testing & Coverage
-
-### Run tests
-
-```bash
-pnpm test
-```
-
-### View coverage
-
-```bash
-pnpm test -- --coverage
-open coverage/index.html
-```
-
----
-
-## 🛠️ Publishing
-
-```bash
-git tag v1.0.0
-git push origin v1.0.0
-```
-
----
-
-## License
-
-MIT — your-org
+- [Linting with Type Information | typescript-eslint](https://typescript-eslint.io/getting-started/typed-linting)
+- [How to quickly configure ESLint for import sorting | Medium](https://medium.com/@diballesteros/how-to-quickly-configure-eslint-for-import-sorting-3a4017bd4853)
