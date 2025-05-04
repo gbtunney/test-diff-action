@@ -27,6 +27,7 @@ jobs:
             - name: Build, Lint and Unit Tests 🚨
               run: |
                   pnpm run build && pnpm fix
+                  ls .
 
             - name: Run repo git logger
               uses: ./packages/repo-git-logger
