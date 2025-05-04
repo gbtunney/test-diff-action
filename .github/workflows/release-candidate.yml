@@ -23,7 +23,7 @@ jobs:
                   pnpm install
 
             - name: Run repo diff logger
-              uses: ./.github/actions/repo-diff-logger
+              uses: actions/repo-diff-logger
               id: diff
               with:
                   LOGGING_REPO: true
