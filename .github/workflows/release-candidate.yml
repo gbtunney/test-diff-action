@@ -1,44 +1,44 @@
 name: 🐣 Release Candidate Validation
 
 on:
-  pull_request:
-    branches: [main]
+    pull_request:
+        branches: [main]
 
 jobs:
-  validate-release-candidate:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
+    validate-release-candidate:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+            pull-requests: write
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 2
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+              with:
+                  fetch-depth: 2
 
-      - name: Setup Node + Install
-        run: |
-          npm install -g pnpm
-          pnpm install
+            - name: Setup Node + Install
+              run: |
+                  npm install -g pnpm
+                  pnpm install
 
-      - name: Run repo diff logger
-        uses: ./.github/actions/repo-diff-logger
-        id: diff
-        with:
-          LOGGING_REPO: true
-          LOGGING_ALL: true
-          LOGGING_REPO_IGNORED: true
+            - name: Run repo diff logger
+              uses: actions/repo-diff-logger
+              id: diff
+              with:
+                  LOGGING_REPO: true
+                  LOGGING_ALL: true
+                  LOGGING_REPO_IGNORED: true
 
-      - name: Block if repo is dirty
-        if: ${{ steps.diff.outputs.REPO_CLEAN != 'true' }}
-        run: |
-          echo "❌ Repo is dirty:"
-          echo "${{ steps.diff.outputs.ALL_CHANGED_FILES }}"
-          exit 1
+            - name: Block if repo is dirty
+              if: ${{ steps.diff.outputs.REPO_CLEAN != 'true' }}
+              run: |
+                  echo "❌ Repo is dirty:"
+                  echo "${{ steps.diff.outputs.ALL_CHANGED_FILES }}"
+                  exit 1
 
-      - name: Run build fix/test/docs
-        run: |
-          pnpm fix
-          pnpm test
-          pnpm docs:build
+            - name: Run build fix/test/docs
+              run: |
+                  pnpm fix
+                  pnpm test
+                  pnpm docs:build

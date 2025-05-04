@@ -1,6 +1,7 @@
 # 🧼 repo-diff-logger
 
-Custom GitHub Action in TypeScript + ESM that logs changed files in a monorepo, checks `.gitignore`, flags modified/new files, and outputs useful diagnostics for release automation.
+Custom GitHub Action in TypeScript + ESM that logs changed files in a monorepo, checks `.gitignore`, flags modified/new
+files, and outputs useful diagnostics for release automation.
 
 ---
 
@@ -58,20 +59,20 @@ pnpm test -- --coverage
 ```yaml
 - uses: your-org/repo-diff-logger@v1
   with:
-    LOGGING_REPO: true
-    LOGGING_ALL: true
-    LOGGING_REPO_IGNORED: true
-    CHANGED_INCLUDES: 'dist,docs,storybook-static,types'
+      LOGGING_REPO: true
+      LOGGING_ALL: true
+      LOGGING_REPO_IGNORED: true
+      CHANGED_INCLUDES: 'dist,docs,storybook-static,types'
 ```
 
 ### Inputs
 
-| Name                  | Type     | Default                                 | Description                                 |
-|-----------------------|----------|-----------------------------------------|---------------------------------------------|
-| `LOGGING_REPO`        | `bool`   | `"true"`                                | Log non-ignored changed files               |
-| `LOGGING_ALL`         | `bool`   | `"false"`                               | Log all changed files (ignored + tracked)   |
-| `LOGGING_REPO_IGNORED`| `bool`   | `"false"`                               | Log `.gitignore`-ignored changed files      |
-| `CHANGED_INCLUDES`    | `string` | `"dist,docs,storybook-static,types"`    | Optional overrides for filtering focus      |
+| Name                   | Type     | Default                              | Description                               |
+| ---------------------- | -------- | ------------------------------------ | ----------------------------------------- |
+| `LOGGING_REPO`         | `bool`   | `"true"`                             | Log non-ignored changed files             |
+| `LOGGING_ALL`          | `bool`   | `"false"`                            | Log all changed files (ignored + tracked) |
+| `LOGGING_REPO_IGNORED` | `bool`   | `"false"`                            | Log `.gitignore`-ignored changed files    |
+| `CHANGED_INCLUDES`     | `string` | `"dist,docs,storybook-static,types"` | Optional overrides for filtering focus    |
 
 ---
 

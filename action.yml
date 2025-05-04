@@ -1,23 +1,23 @@
-name: "repo-diff-logger"
-description: "Logs changed files and flags repo state"
+name: 'repo-diff-logger'
+description: 'Logs changed files and flags repo state'
 inputs:
-  LOGGING_REPO:
-    default: "true"
-  LOGGING_ALL:
-    default: "true"
-  LOGGING_REPO_IGNORED:
-    default: "true"
-  CHANGED_INCLUDES:
-    default: "dist,docs,storybook-static,types"
+    LOGGING_REPO:
+        default: 'true'
+    LOGGING_ALL:
+        default: 'true'
+    LOGGING_REPO_IGNORED:
+        default: 'true'
+    CHANGED_INCLUDES:
+        default: 'dist,docs,storybook-static,types'
 outputs:
-  REPO_CLEAN:
-    description: "true if repo is clean"
-  ALL_CHANGED_FILES:
-    description: "All changed files with flags"
-  REPO_FILES:
-    description: "Filtered repo files"
-  IGNORED_FILES:
-    description: "Files ignored by .gitignore"
+    REPO_CLEAN:
+        description: 'true if repo is clean'
+    ALL_CHANGED_FILES:
+        description: 'All changed files with flags'
+    REPO_FILES:
+        description: 'Filtered repo files'
+    IGNORED_FILES:
+        description: 'Files ignored by .gitignore'
 runs:
-  using: "node20"
-  main: "dist/index.js"
+    using: 'node20'
+    main: 'dist/index.js'
