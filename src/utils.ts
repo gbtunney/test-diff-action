@@ -15,7 +15,8 @@ export function getChangedFiles(): FileInfo[] {
     .split('\n')
     .filter(Boolean)
     .map((line) => {
-      const [status, file] = line.split('\t');
+      const [status, filebk] = line.split('\t');
+      const file :string= (filebk)? filebk : ''
       const flagged = status === 'A' ? 'NEW' : 'MODIFIED';
       const stats = existsSync(file) ? statSync(file) : null;
       const elapsed_seconds = stats ? Math.floor((Date.now() - stats.mtimeMs) / 1000) : null;

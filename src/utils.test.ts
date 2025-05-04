@@ -27,8 +27,8 @@ describe('utils', () => {
 
     const files = utils.getChangedFiles();
     expect(files).toHaveLength(2);
-    expect(files[0].flagged).toBe('NEW');
-    expect(files[1].flagged).toBe('MODIFIED');
+    expect(files[0]?.flagged).toBe('NEW');
+    expect(files[1]?.flagged).toBe('MODIFIED');
   });
 
   it('detects clean repo', () => {

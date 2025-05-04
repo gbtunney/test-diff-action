@@ -4,9 +4,9 @@ inputs:
   LOGGING_REPO:
     default: "true"
   LOGGING_ALL:
-    default: "false"
+    default: "true"
   LOGGING_REPO_IGNORED:
-    default: "false"
+    default: "true"
   CHANGED_INCLUDES:
     default: "dist,docs,storybook-static,types"
 outputs:

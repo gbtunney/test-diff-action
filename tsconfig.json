@@ -1,13 +1,10 @@
 {
-  "compilerOptions": {
-    "target": "ES2020",
-    "module": "ES2020",
-    "moduleResolution": "node",
-    "lib": ["ES2020"],
-    "outDir": "dist",
-    "rootDir": "src",
-    "esModuleInterop": true,
-    "strict": true
-  },
-  "include": ["src"]
+    "extends": "@snailicide/build-config/tsconfig-base",
+    "compilerOptions": {
+        "rootDir": ".",
+        "types": ["node"]
+    },
+    "exclude": ["./node_modules"],
+    "include": ["./*.ts", "./*.mts", "./*.cts", "./*.json"],
+    "references": [{ "path": "./src" }]
 }
