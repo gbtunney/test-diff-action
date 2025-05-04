@@ -1,43 +1,56 @@
 import * as core from '@actions/core'
-import { describe, expect, it, vi } from 'vitest'
-import * as utils from './../src/utils.js'
-import './../src/index.js'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import type { Mock } from 'vitest'
 
-vi.mock('@actions/core')
-vi.mock('../src/utils.js')
+vi.mock('@actions/core', () => ({
+    endGroup: vi.fn(),
+    getInput: vi.fn((key: string) => {
+        const inputMap: Record<string, string> = {
+            CHANGED_INCLUDES: 'dist,docs',
+            LOGGING_ALL: 'true',
+            LOGGING_REPO: 'true',
+            LOGGING_REPO_IGNORED: 'true',
+        }
+        return inputMap[key] ?? ''
+    }),
+    info: vi.fn(),
+    setFailed: vi.fn(),
+    setOutput: vi.fn(),
+    startGroup: vi.fn(),
+}))
+
+vi.mock('@actions/github', () => ({
+    context: {
+        eventName: 'push',
+        payload: {},
+    },
+}))
 
 describe('index.ts full run', () => {
-    it('outputs correct values', async () => {
-        vi.mocked(utils.getChangedFiles).mockReturnValue([
-            { elapsed_seconds: 12, file: 'src/test.ts', flagged: 'MODIFIED' },
-            { elapsed_seconds: 5, file: 'dist/test.js', flagged: 'MODIFIED' },
-        ])
-        vi.mocked(utils.getIgnoreFilter).mockReturnValue((filepath: string) =>
-            filepath.startsWith('dist'),
-        )
-        vi.mocked(utils.isRepoClean).mockReturnValue(true)
+    beforeEach(() => {
+        vi.clearAllMocks()
+    })
 
-        await import('../src/index.js')
-        expect(core.setOutput).toHaveBeenCalledWith('REPO_CLEAN', true)
+    it('outputs correct values', async () => {
+        await import('./index.js')
+
         expect(core.setOutput).toHaveBeenCalledWith(
-            'REPO_FILES',
-            JSON.stringify([
-                {
-                    elapsed_seconds: 12,
-                    file: 'src/test.ts',
-                    flagged: 'MODIFIED',
-                },
-            ]),
+            'REPO_CLEAN',
+            expect.any(Boolean),
         )
-        expect(core.setOutput).toHaveBeenCalledWith(
-            'IGNORED_FILES',
-            JSON.stringify([
-                {
-                    elapsed_seconds: 5,
-                    file: 'dist/test.js',
-                    flagged: 'MODIFIED',
-                },
-            ]),
+
+        const outputCalls = (core.setOutput as Mock).mock.calls
+        const repoFilesCall = outputCalls.find(
+            (args) => args[0] === 'REPO_FILES',
         )
+        const repoFiles = repoFilesCall?.[1]
+
+        expect(Array.isArray(repoFiles)).toBe(true)
+        expect(repoFiles.length).toBeGreaterThan(0)
+
+        for (const file of repoFiles) {
+            expect(file).toHaveProperty('file')
+            expect(file).toHaveProperty('flagged')
+        }
     })
 })

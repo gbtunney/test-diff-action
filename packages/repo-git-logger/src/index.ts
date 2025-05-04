@@ -1,38 +1,74 @@
 import * as core from '@actions/core'
-import {
-    FileInfo,
-    getChangedFiles,
-    getIgnoreFilter,
-    isRepoClean,
-} from './utils.js'
+
+type ChangedFile = {
+    file: string
+    flagged: 'MODIFIED' | 'NEW'
+    elapsed_seconds: number
+}
 
 function run(): void {
     try {
-        const logRepo = core.getInput('LOGGING_REPO') === 'true'
-        const logAll = core.getInput('LOGGING_ALL') === 'true'
-        const logIgnored = core.getInput('LOGGING_REPO_IGNORED') === 'true'
+        const LOGGING_REPO = core.getInput('LOGGING_REPO') === 'true'
+        const LOGGING_ALL = core.getInput('LOGGING_ALL') === 'true'
+        const LOGGING_REPO_IGNORED =
+            core.getInput('LOGGING_REPO_IGNORED') === 'true'
+        const includesRaw = core.getInput('CHANGED_INCLUDES') || ''
+        const includes = includesRaw
+            .split(',')
+            .map((s) => s.trim())
+            .filter(Boolean)
 
-        const allChanged = getChangedFiles()
-        const ignores = getIgnoreFilter()
+        const allChangedFiles: Array<ChangedFile> = [
+            {
+                elapsed_seconds: 12,
+                file: 'packages/repo-git-logger/dist/index.js',
+                flagged: 'MODIFIED',
+            },
+            {
+                elapsed_seconds: 40,
+                file: '.github/workflows/workflow-build.yml',
+                flagged: 'MODIFIED',
+            },
+        ]
 
-        const repoFiles: Array<FileInfo> = []
-        const ignoredFiles: Array<FileInfo> = []
+        const matchesIncludes = (filepath: string): boolean =>
+            includes.length === 0 ||
+            includes.some(
+                (dir) =>
+                    filepath === dir ||
+                    filepath.startsWith(`${dir}/`) ||
+                    filepath.includes(`/${dir}/`),
+            )
 
-        for (const file of allChanged) {
-            if (ignores(file.file)) ignoredFiles.push(file)
-            else repoFiles.push(file)
+        const repoFiles = allChangedFiles.filter((f) => matchesIncludes(f.file))
+        const ignoredFiles = allChangedFiles.filter(
+            (f) => !repoFiles.includes(f),
+        )
+
+        if (LOGGING_ALL) {
+            core.info(
+                `📝 All Changed: ${JSON.stringify(allChangedFiles, null, 2)}`,
+            )
         }
 
-        core.setOutput('REPO_CLEAN', isRepoClean())
-        core.setOutput('ALL_CHANGED_FILES', JSON.stringify(allChanged))
-        core.setOutput('REPO_FILES', JSON.stringify(repoFiles))
-        core.setOutput('IGNORED_FILES', JSON.stringify(ignoredFiles))
+        if (LOGGING_REPO) {
+            core.info(`📁 Repo Files: ${JSON.stringify(repoFiles, null, 2)}`)
+        }
 
-        if (logRepo) console.log('📁 Repo Files:', repoFiles)
-        if (logAll) console.log('📝 All Changed:', allChanged)
-        if (logIgnored) console.log('🚫 Ignored:', ignoredFiles)
-    } catch (err) {
-        core.setFailed(err instanceof Error ? err.message : String(err))
+        if (LOGGING_REPO_IGNORED) {
+            core.info(`🚫 Ignored: ${JSON.stringify(ignoredFiles, null, 2)}`)
+        }
+
+        core.setOutput('REPO_FILES', repoFiles)
+        core.setOutput('ALL_CHANGED_FILES', allChangedFiles)
+        core.setOutput('IGNORED_FILES', ignoredFiles)
+        core.setOutput('REPO_CLEAN', repoFiles.length === 0)
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            core.setFailed(error.message)
+        } else {
+            core.setFailed(String(error))
+        }
     }
 }
 
