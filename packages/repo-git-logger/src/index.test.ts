@@ -1,4 +1,5 @@
-import { describe, it, vi } from 'vitest'
+import * as core from '@actions/core'
+import { describe, expect, it, vi } from 'vitest'
 import * as utils from '../src/utils.js'
 import '../src/index.js'
 

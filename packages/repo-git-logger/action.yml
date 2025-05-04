@@ -1,4 +1,4 @@
-name: 'repo-diff-logger'
+name: 'repo-git-logger'
 description: 'Logs changed files and flags repo state'
 inputs:
     LOGGING_REPO:

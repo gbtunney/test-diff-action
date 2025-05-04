@@ -23,7 +23,7 @@ jobs:
                   pnpm install
 
             - name: Verify Clean State
-              uses: ./.github/actions/repo-diff-logger
+              uses: ./packages/repo-git-logger
               id: diff
               with:
                   LOGGING_REPO: true

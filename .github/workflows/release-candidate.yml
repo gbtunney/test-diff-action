@@ -22,8 +22,8 @@ jobs:
                   npm install -g pnpm
                   pnpm install
 
-            - name: Run repo diff logger
-              uses: actions/repo-diff-logger
+            - name: Run repo git logger
+              uses: ./packages/repo-git-logger
               id: diff
               with:
                   LOGGING_REPO: true
