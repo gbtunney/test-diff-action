@@ -28,14 +28,12 @@ jobs:
               run: |
                   pnpm run build && pnpm fix && pnpm test
 
-
             - name: Run repo diff logger
               uses: ./.github/actions/repo-diff-logger
               id: diff
               with:
-                LOGGING_REPO: true
-                LOGGING_ALL: true
-                LOGGING_REPO_IGNORED: true
-
+                  LOGGING_REPO: true
+                  LOGGING_ALL: true
+                  LOGGING_REPO_IGNORED: true
 
             - run: echo "🍏 This job's status is ${{ job.status }}."
