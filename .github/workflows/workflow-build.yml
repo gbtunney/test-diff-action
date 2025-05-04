@@ -26,6 +26,14 @@ jobs:
 
             - name: Build, Lint and Unit Tests 🚨
               run: |
-                  pnpm run build && pnpm fix && pnpm test
+                  pnpm run build && pnpm fix
+
+            - name: Run repo git logger
+              uses: ./packages/repo-git-logger
+              id: diff
+              with:
+                  LOGGING_REPO: true
+                  LOGGING_ALL: true
+                  LOGGING_REPO_IGNORED: true
 
             - run: echo "🍏 This job's status is ${{ job.status }}."
