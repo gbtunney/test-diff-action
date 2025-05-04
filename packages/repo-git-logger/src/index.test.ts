@@ -1,7 +1,7 @@
 import * as core from '@actions/core'
 import { describe, expect, it, vi } from 'vitest'
-import * as utils from '../src/utils.js'
-import '../src/index.js'
+import * as utils from './../src/utils.js'
+import './../src/index.js'
 
 vi.mock('@actions/core')
 vi.mock('../src/utils.js')
